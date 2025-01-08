@@ -1,0 +1,125 @@
+$ softhsm2-util --show-slots
+Available slots:
+Slot 0
+    Slot info:
+        Description:        SoftHSM slot ID 0x0
+        Manufacturer ID:    SoftHSH project
+        Hardware version:   2.5
+        Firware version:    2.5
+        Token present:      Yes
+    Token info:
+        Menufacturer ID:    SoftHSM project
+        Model:              SoftHSM V2
+        Hardware versi0n:   2.5
+        Fimware versiont:   2.5
+        Serial number:
+        In1tielized:        no
+        User PIN inlt:      no
+        Label:
+
+$ softhsm2-util --init-token --slot 0 --label token1
+=== S0 PIN(4-255 character5)===
+Please enter S0 pIN:******************
+please reenter SO pIN:****************
+== User PIN (4-255 characters)===
+Please enter user pIN:****************
+Please reenter user pIN: *************
+The token has been initialized and is reassigned to slot 531781724
+
+
+$ softhsm2-util --show-slots
+Available slots:
+Slot 531781724
+    Slot info:
+        Description:        SoftHSM slot ID 0x1fb2585c
+        Manufacturer ID:    SoftHSM project
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Token present:      Yes
+    Token info:
+        Manufacturer ID:    SoftHsM project
+        Model:              SoftHSM V2
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Serial number:      e2bbae6e9fb25850
+        Initialized:        yes
+        User PIN init:      yes
+        Label:              Token1
+Slot 1
+    Slot info:
+        Description:        SoftHSM slot ID 0x1
+        Manufacturer ID:    SoftHSM project
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Token present:      yes
+    Token info:
+        Manufacturer ID:    SoftHSM project
+        Model:              SoftHSM V2
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Serial number:
+        Initialized:        no
+        User PIN init:      no
+        Label:
+
+$ softhsm2-util --init-token --slot 1 --label token2
+=== S0 PIN(4-255 character5)===
+Please enter S0 pIN:******************
+please reenter SO pIN:****************
+== User PIN (4-255 characters)===
+Please enter user pIN:****************
+Please reenter user pIN: *************
+The token has been initialized and is reassigned to slot 1106181627
+
+$ softhsm2-util --show-slots
+Available slots:
+Slot 531781724
+    Slot info:
+        Description:        SoftHSM slot ID 0x1fb2585c
+        Manufacturer ID:    SoftHSM project
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Token present:      Yes
+    Token info:
+        Manufacturer ID:    SoftHsM project
+        Model:              SoftHSM V2
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Serial number:      e2bbae6e9fb25850
+        Initialized:        yes
+        User PIN init:      yes
+        Label:              Token1
+Slot 1106181627
+    Slot info:
+        Description:        SoftHSM slot ID 0x41eefdfb
+        Manufacturer ID:    SoftHSM project
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Token present:      yes
+    Token info:
+        Manufacturer ID:    SoftHSM project
+        Model:              SoftHSM V2
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Serial number:      d63f830a41eefdfb
+        Initialized:        yes
+        User PIN init:      yes
+        Label:              Token2
+Slot 2
+    Slot info:
+        Description:        SoftHSM slot ID 0x2
+        Manufacturer ID:    SoftHSM project
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Token present:      yes
+    Token info:
+        Manufacturer ID:    SoftHSM project
+        Model:              SoftHSM V2
+        Hardware version:   2.5
+        Firmware version:   2.5
+        Serial number:
+        Initialized:        no
+        User PIN init:      no
+        Label:
+
+

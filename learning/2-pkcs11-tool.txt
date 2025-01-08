@@ -1,0 +1,33 @@
+$ pkcs11-tool --module C:\SoftHSM2\lib\softhsm2-x64.dll --show-info
+$ pkcs11-tool --module /opt/softhsm2/lib/softhsm/softhsm2.so --show-info
+Cryptoki version 2.40
+Manufacturer    SoftHSM
+Library         Implementation of PKCS11 (ver 2.5)
+Using slot o with a present token (0x1fb2585c)
+
+
+$ pkcs11-tool --module C:\SoftHSM2\lib\softhsm2-x64.dll --list-slots
+$ pkcs11-tool --module /opt/softhsm2/lib/softhsm/softhsm2.so --list-slots
+Available slots:
+Slot 0 (0x1fb2585c): SoftHSM slot ID 0x1fb2585c
+    token label         : Token1
+    token manufacturer  : SoftHSM project
+    token model         : SoftHSM v2
+    token flags         : login required, rng, token initialized, PIN initialized, other flags=0x20
+    hardware version    : 2.5
+    firmare version     : 2.5
+    serial num          : e2bbae6e9fb2585c
+    pin min/max         : 4/255
+Slot 1 (0x41eefdfb): SoftHSM slot ID 0x41eefdfb
+    token label         : Token2
+    token manufacturer  : softHSM project
+    token model         : SoftHSM v2
+    token flags         : login required, rng, token initialized, PIN initialized, other flags-0x20
+    hardware version    : 2.5
+    firmware versior    : 2.5
+    serial num          : d63f830a41eefdfb
+    pin min/max         : 4/255
+Slot 2 (0x2): SoftHSM slot ID 0x2
+    token state:    uninitialized
+
+

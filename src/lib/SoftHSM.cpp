@@ -823,6 +823,19 @@ void SoftHSM::prepareSupportedMechanisms(std::map<std::string, CK_MECHANISM_TYPE
 	t["CKM_CONCATENATE_BASE_AND_DATA"] = CKM_CONCATENATE_BASE_AND_DATA;
 	t["CKM_CONCATENATE_BASE_AND_KEY"] = CKM_CONCATENATE_BASE_AND_KEY;
 
+	// bgk add
+	t["CKM_SM2_KEY_PAIR_GEN"] = CKM_SM2_KEY_PAIR_GEN;
+	t["CKM_SM2"] = CKM_SM2;
+	t["CKM_SM2_ENCRYPT"] = CKM_SM2_ENCRYPT;
+
+	t["CKM_SM3"] = CKM_SM3;
+	t["CKM_SM3_HMAC"] = CKM_SM3_HMAC;
+
+	t["CKM_SM4_KEY_GEN"] = CKM_SM4_KEY_GEN;
+	t["CKM_SM4_ECB"] = CKM_SM4_ECB;
+	t["CKM_SM4_CBC"] = CKM_SM4_CBC;
+	// bgk add end
+
 	supportedMechanisms.clear();
 	for (auto it = t.begin(); it != t.end(); ++it)
 	{
@@ -1303,6 +1316,38 @@ CK_RV SoftHSM::C_GetMechanismInfo(CK_SLOT_ID slotID, CK_MECHANISM_TYPE type, CK_
 	        pInfo->ulMaxKeySize = 512;
 	        pInfo->flags = CKF_DERIVE;
 	        break;
+		case CKM_SM2_KEY_PAIR_GEN:
+			pInfo->ulMinKeySize = 256;
+			pInfo->ulMaxKeySize = 256;
+			pInfo->flags = CKF_GENERATE_KEY_PAIR | CKF_DERIVE;
+			break;
+		case CKM_SM2:
+			pInfo->ulMinKeySize = 256;
+			pInfo->ulMaxKeySize = 256;
+			pInfo->flags = CKF_SIGN | CKF_VERIFY;
+			break;
+		case CKM_SM2_ENCRYPT:
+			pInfo->ulMinKeySize = 256;
+			pInfo->ulMaxKeySize = 256;
+			pInfo->flags = CKF_ENCRYPT | CKF_DECRYPT;
+			break;
+		case CKM_SM3:
+		case CKM_SM3_HMAC:
+			pInfo->ulMinKeySize = 256;
+			pInfo->ulMaxKeySize = 256;
+			pInfo->flags = CKF_SIGN | CKF_VERIFY;
+			break;
+		case CKM_SM4_KEY_GEN:
+			pInfo->ulMinKeySize = 128;
+			pInfo->ulMaxKeySize = 128;
+			pInfo->flags = CKF_GENERATE_KEY_PAIR | CKF_DERIVE;
+			break;
+		case CKM_SM4_ECB:
+		case CKM_SM4_CBC:
+			pInfo->ulMinKeySize = 128;
+			pInfo->ulMaxKeySize = 128;
+			pInfo->flags = CKF_ENCRYPT | CKF_DECRYPT;
+			break;
 		default:
 			DEBUG_MSG("The selected mechanism is not supported");
 			return CKR_MECHANISM_INVALID;

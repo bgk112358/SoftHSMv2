@@ -128,6 +128,7 @@ static CK_FUNCTION_LIST functionList =
 // PKCS #11 initialisation function
 PKCS_API CK_RV C_Initialize(CK_VOID_PTR pInitArgs)
 {
+	printf("[bgk][01] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Initialize(pInitArgs);
@@ -143,6 +144,7 @@ PKCS_API CK_RV C_Initialize(CK_VOID_PTR pInitArgs)
 // PKCS #11 finalisation function
 PKCS_API CK_RV C_Finalize(CK_VOID_PTR pReserved)
 {
+	printf("[bgk][02] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Finalize(pReserved);
@@ -158,6 +160,7 @@ PKCS_API CK_RV C_Finalize(CK_VOID_PTR pReserved)
 // Return information about the PKCS #11 module
 PKCS_API CK_RV C_GetInfo(CK_INFO_PTR pInfo)
 {
+	printf("[bgk][03] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetInfo(pInfo);
@@ -173,6 +176,7 @@ PKCS_API CK_RV C_GetInfo(CK_INFO_PTR pInfo)
 // Return the list of PKCS #11 functions
 PKCS_API CK_RV C_GetFunctionList(CK_FUNCTION_LIST_PTR_PTR ppFunctionList)
 {
+	printf("[bgk][04] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		if (ppFunctionList == NULL_PTR) return CKR_ARGUMENTS_BAD;
@@ -192,6 +196,7 @@ PKCS_API CK_RV C_GetFunctionList(CK_FUNCTION_LIST_PTR_PTR ppFunctionList)
 // Return a list of available slots
 PKCS_API CK_RV C_GetSlotList(CK_BBOOL tokenPresent, CK_SLOT_ID_PTR pSlotList, CK_ULONG_PTR pulCount)
 {
+	printf("[bgk][05] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetSlotList(tokenPresent, pSlotList, pulCount);
@@ -207,6 +212,7 @@ PKCS_API CK_RV C_GetSlotList(CK_BBOOL tokenPresent, CK_SLOT_ID_PTR pSlotList, CK
 // Return information about a slot
 PKCS_API CK_RV C_GetSlotInfo(CK_SLOT_ID slotID, CK_SLOT_INFO_PTR pInfo)
 {
+	printf("[bgk][06] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetSlotInfo(slotID, pInfo);
@@ -222,6 +228,7 @@ PKCS_API CK_RV C_GetSlotInfo(CK_SLOT_ID slotID, CK_SLOT_INFO_PTR pInfo)
 // Return information about a token in a slot
 PKCS_API CK_RV C_GetTokenInfo(CK_SLOT_ID slotID, CK_TOKEN_INFO_PTR pInfo)
 {
+	printf("[bgk][07] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetTokenInfo(slotID, pInfo);
@@ -237,6 +244,7 @@ PKCS_API CK_RV C_GetTokenInfo(CK_SLOT_ID slotID, CK_TOKEN_INFO_PTR pInfo)
 // Return the list of supported mechanisms for a given slot
 PKCS_API CK_RV C_GetMechanismList(CK_SLOT_ID slotID, CK_MECHANISM_TYPE_PTR pMechanismList, CK_ULONG_PTR pulCount)
 {
+	printf("[bgk][08] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetMechanismList(slotID, pMechanismList, pulCount);
@@ -252,6 +260,7 @@ PKCS_API CK_RV C_GetMechanismList(CK_SLOT_ID slotID, CK_MECHANISM_TYPE_PTR pMech
 // Return more information about a mechanism for a given slot
 PKCS_API CK_RV C_GetMechanismInfo(CK_SLOT_ID slotID, CK_MECHANISM_TYPE type, CK_MECHANISM_INFO_PTR pInfo)
 {
+	printf("[bgk][09] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetMechanismInfo(slotID, type, pInfo);
@@ -267,6 +276,7 @@ PKCS_API CK_RV C_GetMechanismInfo(CK_SLOT_ID slotID, CK_MECHANISM_TYPE type, CK_
 // Initialise the token in the specified slot
 PKCS_API CK_RV C_InitToken(CK_SLOT_ID slotID, CK_UTF8CHAR_PTR pPin, CK_ULONG ulPinLen, CK_UTF8CHAR_PTR pLabel)
 {
+	printf("[bgk][10] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_InitToken(slotID, pPin, ulPinLen, pLabel);
@@ -282,6 +292,7 @@ PKCS_API CK_RV C_InitToken(CK_SLOT_ID slotID, CK_UTF8CHAR_PTR pPin, CK_ULONG ulP
 // Initialise the user PIN
 PKCS_API CK_RV C_InitPIN(CK_SESSION_HANDLE hSession, CK_UTF8CHAR_PTR pPin, CK_ULONG ulPinLen)
 {
+	printf("[bgk][11] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_InitPIN(hSession, pPin, ulPinLen);
@@ -297,6 +308,7 @@ PKCS_API CK_RV C_InitPIN(CK_SESSION_HANDLE hSession, CK_UTF8CHAR_PTR pPin, CK_UL
 // Change the PIN
 PKCS_API CK_RV C_SetPIN(CK_SESSION_HANDLE hSession, CK_UTF8CHAR_PTR pOldPin, CK_ULONG ulOldLen, CK_UTF8CHAR_PTR pNewPin, CK_ULONG ulNewLen)
 {
+	printf("[bgk][12] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SetPIN(hSession, pOldPin, ulOldLen, pNewPin, ulNewLen);
@@ -312,6 +324,7 @@ PKCS_API CK_RV C_SetPIN(CK_SESSION_HANDLE hSession, CK_UTF8CHAR_PTR pOldPin, CK_
 // Open a new session to the specified slot
 PKCS_API CK_RV C_OpenSession(CK_SLOT_ID slotID, CK_FLAGS flags, CK_VOID_PTR pApplication, CK_NOTIFY notify, CK_SESSION_HANDLE_PTR phSession)
 {
+	printf("[bgk][13] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_OpenSession(slotID, flags, pApplication, notify, phSession);
@@ -327,6 +340,7 @@ PKCS_API CK_RV C_OpenSession(CK_SLOT_ID slotID, CK_FLAGS flags, CK_VOID_PTR pApp
 // Close the given session
 PKCS_API CK_RV C_CloseSession(CK_SESSION_HANDLE hSession)
 {
+	printf("[bgk][14] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_CloseSession(hSession);
@@ -342,6 +356,7 @@ PKCS_API CK_RV C_CloseSession(CK_SESSION_HANDLE hSession)
 // Close all open sessions
 PKCS_API CK_RV C_CloseAllSessions(CK_SLOT_ID slotID)
 {
+	printf("[bgk][15] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_CloseAllSessions(slotID);
@@ -357,6 +372,7 @@ PKCS_API CK_RV C_CloseAllSessions(CK_SLOT_ID slotID)
 // Retrieve information about the specified session
 PKCS_API CK_RV C_GetSessionInfo(CK_SESSION_HANDLE hSession, CK_SESSION_INFO_PTR pInfo)
 {
+	printf("[bgk][16] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetSessionInfo(hSession, pInfo);
@@ -372,6 +388,7 @@ PKCS_API CK_RV C_GetSessionInfo(CK_SESSION_HANDLE hSession, CK_SESSION_INFO_PTR 
 // Determine the state of a running operation in a session
 PKCS_API CK_RV C_GetOperationState(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pOperationState, CK_ULONG_PTR pulOperationStateLen)
 {
+	printf("[bgk][17] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetOperationState(hSession, pOperationState, pulOperationStateLen);
@@ -387,6 +404,7 @@ PKCS_API CK_RV C_GetOperationState(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pOper
 // Set the operation sate in a session
 PKCS_API CK_RV C_SetOperationState(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pOperationState, CK_ULONG ulOperationStateLen, CK_OBJECT_HANDLE hEncryptionKey, CK_OBJECT_HANDLE hAuthenticationKey)
 {
+	printf("[bgk][18] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SetOperationState(hSession, pOperationState, ulOperationStateLen, hEncryptionKey, hAuthenticationKey);
@@ -402,6 +420,7 @@ PKCS_API CK_RV C_SetOperationState(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pOper
 // Login on the token in the specified session
 PKCS_API CK_RV C_Login(CK_SESSION_HANDLE hSession, CK_USER_TYPE userType, CK_UTF8CHAR_PTR pPin, CK_ULONG ulPinLen)
 {
+	printf("[bgk][19] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Login(hSession, userType, pPin, ulPinLen);
@@ -417,6 +436,7 @@ PKCS_API CK_RV C_Login(CK_SESSION_HANDLE hSession, CK_USER_TYPE userType, CK_UTF
 // Log out of the token in the specified session
 PKCS_API CK_RV C_Logout(CK_SESSION_HANDLE hSession)
 {
+	printf("[bgk][20] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Logout(hSession);
@@ -432,6 +452,7 @@ PKCS_API CK_RV C_Logout(CK_SESSION_HANDLE hSession)
 // Create a new object on the token in the specified session using the given attribute template
 PKCS_API CK_RV C_CreateObject(CK_SESSION_HANDLE hSession, CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount, CK_OBJECT_HANDLE_PTR phObject)
 {
+	printf("[bgk][21] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_CreateObject(hSession, pTemplate, ulCount, phObject);
@@ -447,6 +468,7 @@ PKCS_API CK_RV C_CreateObject(CK_SESSION_HANDLE hSession, CK_ATTRIBUTE_PTR pTemp
 // Create a copy of the object with the specified handle
 PKCS_API CK_RV C_CopyObject(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject, CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount, CK_OBJECT_HANDLE_PTR phNewObject)
 {
+	printf("[bgk][22] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_CopyObject(hSession, hObject, pTemplate, ulCount, phNewObject);
@@ -462,6 +484,7 @@ PKCS_API CK_RV C_CopyObject(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject
 // Destroy the specified object
 PKCS_API CK_RV C_DestroyObject(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject)
 {
+	printf("[bgk][23] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DestroyObject(hSession, hObject);
@@ -477,6 +500,7 @@ PKCS_API CK_RV C_DestroyObject(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObj
 // Determine the size of the specified object
 PKCS_API CK_RV C_GetObjectSize(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject, CK_ULONG_PTR pulSize)
 {
+	printf("[bgk][24] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetObjectSize(hSession, hObject, pulSize);
@@ -492,6 +516,7 @@ PKCS_API CK_RV C_GetObjectSize(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObj
 // Retrieve the specified attributes for the given object
 PKCS_API CK_RV C_GetAttributeValue(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject, CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount)
 {
+	printf("[bgk][25] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetAttributeValue(hSession, hObject, pTemplate, ulCount);
@@ -507,6 +532,7 @@ PKCS_API CK_RV C_GetAttributeValue(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE 
 // Change or set the value of the specified attributes on the specified object
 PKCS_API CK_RV C_SetAttributeValue(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject, CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount)
 {
+	printf("[bgk][26] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SetAttributeValue(hSession, hObject, pTemplate, ulCount);
@@ -522,6 +548,7 @@ PKCS_API CK_RV C_SetAttributeValue(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE 
 // Initialise object search in the specified session using the specified attribute template as search parameters
 PKCS_API CK_RV C_FindObjectsInit(CK_SESSION_HANDLE hSession, CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount)
 {
+	printf("[bgk][27] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_FindObjectsInit(hSession, pTemplate, ulCount);
@@ -537,6 +564,7 @@ PKCS_API CK_RV C_FindObjectsInit(CK_SESSION_HANDLE hSession, CK_ATTRIBUTE_PTR pT
 // Continue the search for objects in the specified session
 PKCS_API CK_RV C_FindObjects(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE_PTR phObject, CK_ULONG ulMaxObjectCount, CK_ULONG_PTR pulObjectCount)
 {
+	printf("[bgk][28] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_FindObjects(hSession, phObject, ulMaxObjectCount, pulObjectCount);
@@ -552,6 +580,7 @@ PKCS_API CK_RV C_FindObjects(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE_PTR ph
 // Finish searching for objects
 PKCS_API CK_RV C_FindObjectsFinal(CK_SESSION_HANDLE hSession)
 {
+	printf("[bgk][29] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_FindObjectsFinal(hSession);
@@ -567,6 +596,7 @@ PKCS_API CK_RV C_FindObjectsFinal(CK_SESSION_HANDLE hSession)
 // Initialise encryption using the specified object and mechanism
 PKCS_API CK_RV C_EncryptInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hObject)
 {
+	printf("[bgk][30] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_EncryptInit(hSession, pMechanism, hObject);
@@ -582,6 +612,7 @@ PKCS_API CK_RV C_EncryptInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMecha
 // Perform a single operation encryption operation in the specified session
 PKCS_API CK_RV C_Encrypt(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG ulDataLen, CK_BYTE_PTR pEncryptedData, CK_ULONG_PTR pulEncryptedDataLen)
 {
+	printf("[bgk][31] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Encrypt(hSession, pData, ulDataLen, pEncryptedData, pulEncryptedDataLen);
@@ -597,6 +628,7 @@ PKCS_API CK_RV C_Encrypt(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG
 // Feed data to the running encryption operation in a session
 PKCS_API CK_RV C_EncryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG ulDataLen, CK_BYTE_PTR pEncryptedData, CK_ULONG_PTR pulEncryptedDataLen)
 {
+	printf("[bgk][32] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_EncryptUpdate(hSession, pData, ulDataLen, pEncryptedData, pulEncryptedDataLen);
@@ -612,6 +644,7 @@ PKCS_API CK_RV C_EncryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK
 // Finalise the encryption operation
 PKCS_API CK_RV C_EncryptFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEncryptedData, CK_ULONG_PTR pulEncryptedDataLen)
 {
+	printf("[bgk][33] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_EncryptFinal(hSession, pEncryptedData, pulEncryptedDataLen);
@@ -627,6 +660,7 @@ PKCS_API CK_RV C_EncryptFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEncrypted
 // Initialise decryption using the specified object
 PKCS_API CK_RV C_DecryptInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hObject)
 {
+	printf("[bgk][34] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DecryptInit(hSession, pMechanism, hObject);
@@ -642,6 +676,7 @@ PKCS_API CK_RV C_DecryptInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMecha
 // Perform a single operation decryption in the given session
 PKCS_API CK_RV C_Decrypt(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEncryptedData, CK_ULONG ulEncryptedDataLen, CK_BYTE_PTR pData, CK_ULONG_PTR pulDataLen)
 {
+	printf("[bgk][35] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Decrypt(hSession, pEncryptedData, ulEncryptedDataLen, pData, pulDataLen);
@@ -657,6 +692,7 @@ PKCS_API CK_RV C_Decrypt(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEncryptedData,
 // Feed data to the running decryption operation in a session
 PKCS_API CK_RV C_DecryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEncryptedData, CK_ULONG ulEncryptedDataLen, CK_BYTE_PTR pData, CK_ULONG_PTR pDataLen)
 {
+	printf("[bgk][36] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DecryptUpdate(hSession, pEncryptedData, ulEncryptedDataLen, pData, pDataLen);
@@ -672,6 +708,7 @@ PKCS_API CK_RV C_DecryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEncrypte
 // Finalise the decryption operation
 PKCS_API CK_RV C_DecryptFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG_PTR pDataLen)
 {
+	printf("[bgk][37] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DecryptFinal(hSession, pData, pDataLen);
@@ -687,6 +724,7 @@ PKCS_API CK_RV C_DecryptFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_
 // Initialise digesting using the specified mechanism in the specified session
 PKCS_API CK_RV C_DigestInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism)
 {
+	printf("[bgk][38] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DigestInit(hSession, pMechanism);
@@ -702,6 +740,7 @@ PKCS_API CK_RV C_DigestInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechan
 // Digest the specified data in a one-pass operation and return the resulting digest
 PKCS_API CK_RV C_Digest(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG ulDataLen, CK_BYTE_PTR pDigest, CK_ULONG_PTR pulDigestLen)
 {
+	printf("[bgk][39] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Digest(hSession, pData, ulDataLen, pDigest, pulDigestLen);
@@ -717,6 +756,7 @@ PKCS_API CK_RV C_Digest(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG 
 // Update a running digest operation
 PKCS_API CK_RV C_DigestUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_ULONG ulPartLen)
 {
+	printf("[bgk][40] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DigestUpdate(hSession, pPart, ulPartLen);
@@ -732,6 +772,7 @@ PKCS_API CK_RV C_DigestUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_
 // Update a running digest operation by digesting a secret key with the specified handle
 PKCS_API CK_RV C_DigestKey(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject)
 {
+	printf("[bgk][41] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DigestKey(hSession, hObject);
@@ -747,6 +788,7 @@ PKCS_API CK_RV C_DigestKey(CK_SESSION_HANDLE hSession, CK_OBJECT_HANDLE hObject)
 // Finalise the digest operation in the specified session and return the digest
 PKCS_API CK_RV C_DigestFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pDigest, CK_ULONG_PTR pulDigestLen)
 {
+	printf("[bgk][42] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DigestFinal(hSession, pDigest, pulDigestLen);
@@ -762,6 +804,7 @@ PKCS_API CK_RV C_DigestFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pDigest, CK
 // Initialise a signing operation using the specified key and mechanism
 PKCS_API CK_RV C_SignInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hKey)
 {
+	printf("[bgk][43] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SignInit(hSession, pMechanism, hKey);
@@ -777,6 +820,7 @@ PKCS_API CK_RV C_SignInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanis
 // Sign the data in a single pass operation
 PKCS_API CK_RV C_Sign(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG ulDataLen, CK_BYTE_PTR pSignature, CK_ULONG_PTR pulSignatureLen)
 {
+	printf("[bgk][44] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Sign(hSession, pData, ulDataLen, pSignature, pulSignatureLen);
@@ -792,6 +836,7 @@ PKCS_API CK_RV C_Sign(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG ul
 // Update a running signing operation with additional data
 PKCS_API CK_RV C_SignUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_ULONG ulPartLen)
 {
+	printf("[bgk][45] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SignUpdate(hSession, pPart, ulPartLen);
@@ -807,6 +852,7 @@ PKCS_API CK_RV C_SignUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_UL
 // Finalise a running signing operation and return the signature
 PKCS_API CK_RV C_SignFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSignature, CK_ULONG_PTR pulSignatureLen)
 {
+	printf("[bgk][46] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SignFinal(hSession, pSignature, pulSignatureLen);
@@ -822,6 +868,7 @@ PKCS_API CK_RV C_SignFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSignature, C
 // Initialise a signing operation that allows recovery of the signed data
 PKCS_API CK_RV C_SignRecoverInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hKey)
 {
+	printf("[bgk][47] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SignRecoverInit(hSession, pMechanism, hKey);
@@ -837,6 +884,7 @@ PKCS_API CK_RV C_SignRecoverInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pM
 // Perform a single part signing operation that allows recovery of the signed data
 PKCS_API CK_RV C_SignRecover(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG ulDataLen, CK_BYTE_PTR pSignature, CK_ULONG_PTR pulSignatureLen)
 {
+	printf("[bgk][48] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SignRecover(hSession, pData, ulDataLen, pSignature, pulSignatureLen);
@@ -852,6 +900,7 @@ PKCS_API CK_RV C_SignRecover(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_U
 // Initialise a verification operation using the specified key and mechanism
 PKCS_API CK_RV C_VerifyInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hKey)
 {
+	printf("[bgk][49] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_VerifyInit(hSession, pMechanism, hKey);
@@ -867,6 +916,7 @@ PKCS_API CK_RV C_VerifyInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechan
 // Perform a single pass verification operation
 PKCS_API CK_RV C_Verify(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG ulDataLen, CK_BYTE_PTR pSignature, CK_ULONG ulSignatureLen)
 {
+	printf("[bgk][50] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_Verify(hSession, pData, ulDataLen, pSignature, ulSignatureLen);
@@ -882,6 +932,7 @@ PKCS_API CK_RV C_Verify(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pData, CK_ULONG 
 // Update a running verification operation with additional data
 PKCS_API CK_RV C_VerifyUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_ULONG ulPartLen)
 {
+	printf("[bgk][51] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_VerifyUpdate(hSession, pPart, ulPartLen);
@@ -897,6 +948,7 @@ PKCS_API CK_RV C_VerifyUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_
 // Finalise the verification operation and check the signature
 PKCS_API CK_RV C_VerifyFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSignature, CK_ULONG ulSignatureLen)
 {
+	printf("[bgk][52] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_VerifyFinal(hSession, pSignature, ulSignatureLen);
@@ -912,6 +964,7 @@ PKCS_API CK_RV C_VerifyFinal(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSignature,
 // Initialise a verification operation the allows recovery of the signed data from the signature
 PKCS_API CK_RV C_VerifyRecoverInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hKey)
 {
+	printf("[bgk][53] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_VerifyRecoverInit(hSession, pMechanism, hKey);
@@ -927,6 +980,7 @@ PKCS_API CK_RV C_VerifyRecoverInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR 
 // Perform a single part verification operation and recover the signed data
 PKCS_API CK_RV C_VerifyRecover(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSignature, CK_ULONG ulSignatureLen, CK_BYTE_PTR pData, CK_ULONG_PTR pulDataLen)
 {
+	printf("[bgk][54] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_VerifyRecover(hSession, pSignature, ulSignatureLen, pData, pulDataLen);
@@ -942,6 +996,7 @@ PKCS_API CK_RV C_VerifyRecover(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSignatur
 // Update a running multi-part encryption and digesting operation
 PKCS_API CK_RV C_DigestEncryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_ULONG ulPartLen, CK_BYTE_PTR pEncryptedPart, CK_ULONG_PTR pulEncryptedPartLen)
 {
+	printf("[bgk][55] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DigestEncryptUpdate(hSession, pPart, ulPartLen, pEncryptedPart, pulEncryptedPartLen);
@@ -957,6 +1012,7 @@ PKCS_API CK_RV C_DigestEncryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPa
 // Update a running multi-part decryption and digesting operation
 PKCS_API CK_RV C_DecryptDigestUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_ULONG ulPartLen, CK_BYTE_PTR pDecryptedPart, CK_ULONG_PTR pulDecryptedPartLen)
 {
+	printf("[bgk][56] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DecryptDigestUpdate(hSession, pPart, ulPartLen, pDecryptedPart, pulDecryptedPartLen);
@@ -972,6 +1028,7 @@ PKCS_API CK_RV C_DecryptDigestUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPa
 // Update a running multi-part signing and encryption operation
 PKCS_API CK_RV C_SignEncryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart, CK_ULONG ulPartLen, CK_BYTE_PTR pEncryptedPart, CK_ULONG_PTR pulEncryptedPartLen)
 {
+	printf("[bgk][57] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SignEncryptUpdate(hSession, pPart, ulPartLen, pEncryptedPart, pulEncryptedPartLen);
@@ -987,6 +1044,7 @@ PKCS_API CK_RV C_SignEncryptUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pPart
 // Update a running multi-part decryption and verification operation
 PKCS_API CK_RV C_DecryptVerifyUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEncryptedPart, CK_ULONG ulEncryptedPartLen, CK_BYTE_PTR pPart, CK_ULONG_PTR pulPartLen)
 {
+	printf("[bgk][58] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DecryptVerifyUpdate(hSession, pEncryptedPart, ulEncryptedPartLen, pPart, pulPartLen);
@@ -1002,6 +1060,7 @@ PKCS_API CK_RV C_DecryptVerifyUpdate(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pEn
 // Generate a secret key using the specified mechanism
 PKCS_API CK_RV C_GenerateKey(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMechanism, CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount, CK_OBJECT_HANDLE_PTR phKey)
 {
+	printf("[bgk][59] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GenerateKey(hSession, pMechanism, pTemplate, ulCount, phKey);
@@ -1027,6 +1086,7 @@ PKCS_API CK_RV C_GenerateKeyPair
 	CK_OBJECT_HANDLE_PTR phPrivateKey
 )
 {
+	printf("[bgk][60] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GenerateKeyPair(hSession, pMechanism, pPublicKeyTemplate, ulPublicKeyAttributeCount, pPrivateKeyTemplate, ulPrivateKeyAttributeCount, phPublicKey, phPrivateKey);
@@ -1050,6 +1110,7 @@ PKCS_API CK_RV C_WrapKey
 	CK_ULONG_PTR pulWrappedKeyLen
 )
 {
+	printf("[bgk][61] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_WrapKey(hSession, pMechanism, hWrappingKey, hKey, pWrappedKey, pulWrappedKeyLen);
@@ -1075,6 +1136,7 @@ PKCS_API CK_RV C_UnwrapKey
 	CK_OBJECT_HANDLE_PTR phKey
 )
 {
+	printf("[bgk][62] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_UnwrapKey(hSession, pMechanism, hUnwrappingKey, pWrappedKey, ulWrappedKeyLen, pTemplate, ulCount, phKey);
@@ -1098,6 +1160,7 @@ PKCS_API CK_RV C_DeriveKey
 	CK_OBJECT_HANDLE_PTR phKey
 )
 {
+	printf("[bgk][63] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_DeriveKey(hSession, pMechanism, hBaseKey, pTemplate, ulCount, phKey);
@@ -1113,6 +1176,7 @@ PKCS_API CK_RV C_DeriveKey
 // Seed the random number generator with new data
 PKCS_API CK_RV C_SeedRandom(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSeed, CK_ULONG ulSeedLen)
 {
+	printf("[bgk][64] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_SeedRandom(hSession, pSeed, ulSeedLen);
@@ -1128,6 +1192,7 @@ PKCS_API CK_RV C_SeedRandom(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pSeed, CK_UL
 // Generate the specified amount of random data
 PKCS_API CK_RV C_GenerateRandom(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pRandomData, CK_ULONG ulRandomLen)
 {
+	printf("[bgk][65] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GenerateRandom(hSession, pRandomData, ulRandomLen);
@@ -1143,6 +1208,7 @@ PKCS_API CK_RV C_GenerateRandom(CK_SESSION_HANDLE hSession, CK_BYTE_PTR pRandomD
 // Legacy function
 PKCS_API CK_RV C_GetFunctionStatus(CK_SESSION_HANDLE hSession)
 {
+	printf("[bgk][66] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_GetFunctionStatus(hSession);
@@ -1158,6 +1224,7 @@ PKCS_API CK_RV C_GetFunctionStatus(CK_SESSION_HANDLE hSession)
 // Legacy function
 PKCS_API CK_RV C_CancelFunction(CK_SESSION_HANDLE hSession)
 {
+	printf("[bgk][67] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_CancelFunction(hSession);
@@ -1173,6 +1240,7 @@ PKCS_API CK_RV C_CancelFunction(CK_SESSION_HANDLE hSession)
 // Wait or poll for a slot even on the specified slot
 PKCS_API CK_RV C_WaitForSlotEvent(CK_FLAGS flags, CK_SLOT_ID_PTR pSlot, CK_VOID_PTR pReserved)
 {
+	printf("[bgk][68] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 	try
 	{
 		return SoftHSM::i()->C_WaitForSlotEvent(flags, pSlot, pReserved);
