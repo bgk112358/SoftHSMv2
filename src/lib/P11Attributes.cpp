@@ -36,6 +36,7 @@
 #include "CryptoFactory.h"
 #include "DESKey.h"
 #include "AESKey.h"
+#include "SM4Key.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -518,6 +519,7 @@ CK_RV P11AttrClass::updateAttr(Token* /*token*/, bool /*isPrivate*/, CK_VOID_PTR
 
 	if (osobject->getUnsignedLongValue(CKA_CLASS, CKO_VENDOR_DEFINED) != *(CK_ULONG*)pValue)
 	{
+		printf("[bgk][updateAttr] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 		return CKR_TEMPLATE_INCONSISTENT;
 	}
 
@@ -545,8 +547,10 @@ CK_RV P11AttrKeyType::updateAttr(Token* /*token*/, bool /*isPrivate*/, CK_VOID_P
 		return CKR_ATTRIBUTE_VALUE_INVALID;
 	}
 
+	printf("[bgk][updateAttr] getUnsignedLongValue = %ld, pValue = %ld \n", osobject->getUnsignedLongValue(CKA_KEY_TYPE, CKK_VENDOR_DEFINED) , *(CK_ULONG*)pValue);
 	if (osobject->getUnsignedLongValue(CKA_KEY_TYPE, CKK_VENDOR_DEFINED) != *(CK_ULONG*)pValue)
 	{
+		printf("[bgk][updateAttr] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 		return CKR_TEMPLATE_INCONSISTENT;
 	}
 
@@ -578,6 +582,7 @@ CK_RV P11AttrCertificateType::updateAttr(Token* /*token*/, bool /*isPrivate*/, C
 
 	if (osobject->getUnsignedLongValue(CKA_CERTIFICATE_TYPE, CKC_VENDOR_DEFINED) != *(CK_ULONG*)pValue)
 	{
+		printf("[bgk][updateAttr] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 		return CKR_TEMPLATE_INCONSISTENT;
 	}
 
@@ -864,6 +869,7 @@ CK_RV P11AttrCheckValue::updateAttr(Token *token, bool isPrivate, CK_VOID_PTR pV
 		SymmetricKey key;
 		AESKey aes;
 		DESKey des;
+		SM4Key sm4;
 		switch (osobject->getUnsignedLongValue(CKA_KEY_TYPE, CKK_VENDOR_DEFINED))
 		{
 			case CKK_GENERIC_SECRET:
@@ -881,6 +887,12 @@ CK_RV P11AttrCheckValue::updateAttr(Token *token, bool isPrivate, CK_VOID_PTR pV
 				aes.setKeyBits(keybits);
 				aes.setBitLen(keybits.size() * 8);
 				checkValue = aes.getKeyCheckValue();
+				break;
+			case CKK_SM4:
+				printf("[bgk][updateAttr] %s:%d:%s, keybits = %s \n", __FILE__, __LINE__, __FUNCTION__, keybits);
+				sm4.setKeyBits(keybits);
+				sm4.setBitLen(keybits.size() * 8);
+				checkValue = sm4.getKeyCheckValue();
 				break;
 			case CKK_DES:
 			case CKK_DES2:
@@ -1021,6 +1033,7 @@ CK_RV P11AttrValue::updateAttr(Token *token, bool isPrivate, CK_VOID_PTR pValue,
 		SymmetricKey key;
 		AESKey aes;
 		DESKey des;
+		SM4Key sm4;
 		ByteString checkValue;
 		switch (osobject->getUnsignedLongValue(CKA_KEY_TYPE, CKK_VENDOR_DEFINED))
 		{
@@ -1039,6 +1052,12 @@ CK_RV P11AttrValue::updateAttr(Token *token, bool isPrivate, CK_VOID_PTR pValue,
 				aes.setKeyBits(plaintext);
 				aes.setBitLen(plaintext.size() * 8);
 				checkValue = aes.getKeyCheckValue();
+				break;
+			case CKK_SM4:
+				printf("[bgk][updateAttr] %s:%d:%s, plaintext = %s \n", __FILE__, __LINE__, __FUNCTION__, plaintext);
+				sm4.setKeyBits(plaintext);
+				sm4.setBitLen(plaintext.size() * 8);
+				checkValue = sm4.getKeyCheckValue();
 				break;
 			case CKK_DES:
 			case CKK_DES2:
@@ -1904,6 +1923,7 @@ CK_RV P11AttrAlwaysAuthenticate::updateAttr(Token* /*token*/, bool isPrivate, CK
 	{
 		if (!isPrivate)
 		{
+			printf("[bgk][updateAttr] %s:%d:%s \n", __FILE__, __LINE__, __FUNCTION__);
 			return CKR_TEMPLATE_INCONSISTENT;
 		}
 

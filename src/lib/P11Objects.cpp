@@ -1648,6 +1648,51 @@ bool P11AESSecretKeyObj::init(OSObject *inobject)
 }
 
 // Constructor
+P11SM4SecretKeyObj::P11SM4SecretKeyObj()
+{
+	initialized = false;
+}
+
+// Add attributes
+bool P11SM4SecretKeyObj::init(OSObject *inobject)
+{
+	if (initialized) return true;
+	if (inobject == NULL) return false;
+
+	if (!inobject->attributeExists(CKA_KEY_TYPE) || inobject->getUnsignedLongValue(CKA_KEY_TYPE, CKK_VENDOR_DEFINED) != CKK_SM4) {
+		OSAttribute setKeyType((unsigned long)CKK_SM4);
+		inobject->setAttribute(CKA_KEY_TYPE, setKeyType);
+	}
+
+	// Create parent
+	if (!P11SecretKeyObj::init(inobject)) return false;
+
+	// Create attributes
+	P11Attribute* attrValue = new P11AttrValue(osobject,P11Attribute::ck1|P11Attribute::ck4|P11Attribute::ck6|P11Attribute::ck7);
+	P11Attribute* attrValueLen = new P11AttrValueLen(osobject,P11Attribute::ck6);
+
+	// Initialize the attributes
+	if
+	(
+		!attrValue->init() ||
+		!attrValueLen->init()
+	)
+	{
+		ERROR_MSG("Could not initialize the attribute");
+		delete attrValue;
+		delete attrValueLen;
+		return false;
+	}
+
+	// Add them to the map
+	attributes[attrValue->getType()] = attrValue;
+	attributes[attrValueLen->getType()] = attrValueLen;
+
+	initialized = true;
+	return true;
+}
+
+// Constructor
 P11DESSecretKeyObj::P11DESSecretKeyObj()
 {
 	initialized = false;

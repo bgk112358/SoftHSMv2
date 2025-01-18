@@ -35,6 +35,7 @@
 #include "OSSLCryptoFactory.h"
 #include "OSSLRNG.h"
 #include "OSSLAES.h"
+#include "OSSLSM4.h"
 #include "OSSLDES.h"
 #include "OSSLMD5.h"
 #include "OSSLSHA1.h"
@@ -310,6 +311,8 @@ SymmetricAlgorithm* OSSLCryptoFactory::getSymmetricAlgorithm(SymAlgo::Type algor
 		case SymAlgo::DES:
 		case SymAlgo::DES3:
 			return new OSSLDES();
+		case SymAlgo::SM4:
+			return new OSSLSM4();
 	}
 
 	// No algorithm implementation is available

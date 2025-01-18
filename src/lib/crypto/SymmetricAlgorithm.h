@@ -45,7 +45,8 @@ struct SymAlgo
 		Unknown,
 		AES,
 		DES,
-		DES3
+		DES3,
+		SM4
 	};
 };
 

@@ -43,6 +43,7 @@
 #include "AsymmetricAlgorithm.h"
 #include "SymmetricAlgorithm.h"
 #include "AESKey.h"
+#include "SM4Key.h"
 #include "DerUtil.h"
 #include "DESKey.h"
 #include "RNG.h"
@@ -176,6 +177,10 @@ static CK_RV newP11Object(CK_OBJECT_CLASS objClass, CK_KEY_TYPE keyType, CK_CERT
 			else if (keyType == CKK_AES)
 			{
 				*p11object = new P11AESSecretKeyObj();
+			}
+			else if (keyType == CKK_SM4)
+			{
+				*p11object = new P11SM4SecretKeyObj();
 			}
 			else if ((keyType == CKK_DES) ||
 				 (keyType == CKK_DES2) ||
@@ -331,6 +336,13 @@ static CK_RV checkKeyLength(CK_KEY_TYPE keyType, size_t byteLen)
 			if (byteLen != 16 && byteLen != 24 && byteLen != 32)
 			{
 				INFO_MSG("CKA_VALUE_LEN must be 16, 24, or 32");
+				return CKR_ATTRIBUTE_VALUE_INVALID;
+			}
+			break;
+		case CKK_SM4:
+			if (byteLen != 16)
+			{
+				INFO_MSG("CKA_VALUE_LEN must be 16");
 				return CKR_ATTRIBUTE_VALUE_INVALID;
 			}
 			break;
@@ -1340,7 +1352,7 @@ CK_RV SoftHSM::C_GetMechanismInfo(CK_SLOT_ID slotID, CK_MECHANISM_TYPE type, CK_
 		case CKM_SM4_KEY_GEN:
 			pInfo->ulMinKeySize = 128;
 			pInfo->ulMaxKeySize = 128;
-			pInfo->flags = CKF_GENERATE_KEY_PAIR | CKF_DERIVE;
+			pInfo->flags = CKF_GENERATE;
 			break;
 		case CKM_SM4_ECB:
 		case CKM_SM4_CBC:
@@ -5947,6 +5959,10 @@ CK_RV SoftHSM::C_GenerateKey(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMecha
 			objClass = CKO_SECRET_KEY;
 			keyType = CKK_GENERIC_SECRET;
 			break;
+		case CKM_SM4_KEY_GEN:
+			objClass = CKO_SECRET_KEY;
+			keyType = CKK_SM4;
+			break;
 		default:
 			return CKR_MECHANISM_INVALID;
 	}
@@ -5981,6 +5997,9 @@ CK_RV SoftHSM::C_GenerateKey(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMecha
 		return CKR_TEMPLATE_INCONSISTENT;
 	if (pMechanism->mechanism == CKM_GENERIC_SECRET_KEY_GEN &&
 	    (objClass != CKO_SECRET_KEY || keyType != CKK_GENERIC_SECRET))
+		return CKR_TEMPLATE_INCONSISTENT;
+	if (pMechanism->mechanism == CKM_SM4_KEY_GEN &&
+	    (objClass != CKO_SECRET_KEY || keyType != CKK_SM4))
 		return CKR_TEMPLATE_INCONSISTENT;
 
 	// Check authorization
@@ -6036,6 +6055,13 @@ CK_RV SoftHSM::C_GenerateKey(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMecha
 	{
 		return this->generateGeneric(hSession, pTemplate, ulCount, phKey, isOnToken, isPrivate);
 	}
+
+	// Generate SM4 secret key
+	if (pMechanism->mechanism == CKM_SM4_KEY_GEN)
+	{
+		return this->generateSM4(hSession, pTemplate, ulCount, phKey, isOnToken, isPrivate);
+	}
+
 
 	return CKR_GENERAL_ERROR;
 }
@@ -6343,6 +6369,10 @@ CK_RV SoftHSM::WrapKeySym
 			blocksize = 8;
 			wrappedlen = RFC5652Pad(keydata, blocksize);
 			algo = SymAlgo::DES3;
+			break;
+
+		case CKM_SM4_CBC:
+			algo = SymAlgo::SM4;
 			break;
 			
 		default:
@@ -7720,6 +7750,178 @@ CK_RV SoftHSM::generateGeneric
 	}
 
 	return rv;
+}
+
+// Generate an SM4 secret key
+CK_RV SoftHSM::generateSM4
+(CK_SESSION_HANDLE hSession,
+	CK_ATTRIBUTE_PTR pTemplate,
+	CK_ULONG ulCount,
+	CK_OBJECT_HANDLE_PTR phKey,
+	CK_BBOOL isOnToken,
+	CK_BBOOL isPrivate)
+{
+	*phKey = CK_INVALID_HANDLE;
+
+	// Get the session
+	Session* session = (Session*)handleManager->getSession(hSession);
+	if (session == NULL)
+		return CKR_SESSION_HANDLE_INVALID;
+
+	// Get the token
+	Token* token = session->getToken();
+	if (token == NULL)
+		return CKR_GENERAL_ERROR;
+
+	// Extract desired parameter information
+	bool checkValue = true;
+	for (CK_ULONG i = 0; i < ulCount; i++)
+	{
+		switch (pTemplate[i].type)
+		{
+			case CKA_CHECK_VALUE:
+				if (pTemplate[i].ulValueLen > 0)
+				{
+					INFO_MSG("CKA_CHECK_VALUE must be a no-value (0 length) entry");
+					return CKR_ATTRIBUTE_VALUE_INVALID;
+				}
+				checkValue = false;
+				break;
+			default:
+				break;
+		}
+	}
+
+	// Generate the secret key
+	SM4Key* key = new SM4Key(128);
+	SymmetricAlgorithm* sm4 = CryptoFactory::i()->getSymmetricAlgorithm(SymAlgo::SM4);
+	if (sm4 == NULL)
+	{
+		ERROR_MSG("Could not get SymmetricAlgorithm");
+		delete key;
+		return CKR_GENERAL_ERROR;
+	}
+	RNG* rng = CryptoFactory::i()->getRNG();
+	if (rng == NULL)
+	{
+		ERROR_MSG("Could not get RNG");
+		sm4->recycleKey(key);
+		CryptoFactory::i()->recycleSymmetricAlgorithm(sm4);
+		return CKR_GENERAL_ERROR;
+	}
+	if (!sm4->generateKey(*key, rng))
+	{
+		ERROR_MSG("Could not generate SM4 secret key");
+		sm4->recycleKey(key);
+		CryptoFactory::i()->recycleSymmetricAlgorithm(sm4);
+		return CKR_GENERAL_ERROR;
+	}
+
+	CK_RV rv = CKR_OK;
+
+	// Create the secret key object using C_CreateObject
+	const CK_ULONG maxAttribs = 32;
+	CK_OBJECT_CLASS objClass = CKO_SECRET_KEY;
+	CK_KEY_TYPE keyType = CKK_SM4;
+	CK_ATTRIBUTE keyAttribs[maxAttribs] = {
+		{ CKA_CLASS, &objClass, sizeof(objClass) },
+		{ CKA_TOKEN, &isOnToken, sizeof(isOnToken) },
+		{ CKA_PRIVATE, &isPrivate, sizeof(isPrivate) },
+		{ CKA_KEY_TYPE, &keyType, sizeof(keyType) },
+	};
+	CK_ULONG keyAttribsCount = 4;
+
+	// Add the additional
+	if (ulCount > (maxAttribs - keyAttribsCount))
+		rv = CKR_TEMPLATE_INCONSISTENT;
+	for (CK_ULONG i=0; i < ulCount && rv == CKR_OK; ++i)
+	{
+		switch (pTemplate[i].type)
+		{
+			case CKA_CLASS:
+			case CKA_TOKEN:
+			case CKA_PRIVATE:
+			case CKA_KEY_TYPE:
+			case CKA_CHECK_VALUE:
+				continue;
+		default:
+			keyAttribs[keyAttribsCount++] = pTemplate[i];
+		}
+	}
+
+	if (rv == CKR_OK)
+		rv = this->CreateObject(hSession, keyAttribs, keyAttribsCount, phKey,OBJECT_OP_GENERATE);
+
+	// Store the attributes that are being supplied
+	if (rv == CKR_OK)
+	{
+		OSObject* osobject = (OSObject*)handleManager->getObject(*phKey);
+		if (osobject == NULL_PTR || !osobject->isValid()) 
+        {
+			rv = CKR_FUNCTION_FAILED;
+		} 
+        else if (osobject->startTransaction()) 
+        {
+			bool bOK = true;
+
+			// Common Attributes
+			bOK = bOK && osobject->setAttribute(CKA_LOCAL,true);
+			CK_ULONG ulKeyGenMechanism = (CK_ULONG)CKM_SM4_KEY_GEN;
+			bOK = bOK && osobject->setAttribute(CKA_KEY_GEN_MECHANISM,ulKeyGenMechanism);
+
+			// Common Secret Key Attributes
+			bool bAlwaysSensitive = osobject->getBooleanValue(CKA_SENSITIVE, false);
+			bOK = bOK && osobject->setAttribute(CKA_ALWAYS_SENSITIVE,bAlwaysSensitive);
+			bool bNeverExtractable = osobject->getBooleanValue(CKA_EXTRACTABLE, false) == false;
+			bOK = bOK && osobject->setAttribute(CKA_NEVER_EXTRACTABLE, bNeverExtractable);
+
+			// SM4 Secret Key Attributes
+			ByteString value;
+			ByteString kcv;
+			if (isPrivate)
+			{
+				token->encrypt(key->getKeyBits(), value);
+				token->encrypt(key->getKeyCheckValue(), kcv);
+			}
+			else
+			{
+				value = key->getKeyBits();
+				kcv = key->getKeyCheckValue();
+			}
+			bOK = bOK && osobject->setAttribute(CKA_VALUE, value);
+			if (checkValue)
+				bOK = bOK && osobject->setAttribute(CKA_CHECK_VALUE, kcv);
+
+			if (bOK)
+				bOK = osobject->commitTransaction();
+			else
+				osobject->abortTransaction();
+
+			if (!bOK)
+				rv = CKR_FUNCTION_FAILED;
+		} else
+			rv = CKR_FUNCTION_FAILED;
+	}
+
+	// Clean up
+	sm4->recycleKey(key);
+	CryptoFactory::i()->recycleSymmetricAlgorithm(sm4);
+
+	// Remove the key that may have been created already when the function fails.
+	if (rv != CKR_OK)
+	{
+		if (*phKey != CK_INVALID_HANDLE)
+		{
+			OSObject* oskey = (OSObject*)handleManager->getObject(*phKey);
+			handleManager->destroyObject(*phKey);
+			if (oskey) oskey->destroyObject();
+			*phKey = CK_INVALID_HANDLE;
+		}
+	}
+
+	return rv;
+
+	return CKR_OK;
 }
 
 // Generate an AES secret key

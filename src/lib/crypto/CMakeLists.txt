@@ -8,6 +8,7 @@ set(INCLUDE_DIRS ${PROJECT_SOURCE_DIR}
                  )
 
 set(SOURCES AESKey.cpp
+            SM4Key.cpp
             AsymmetricAlgorithm.cpp
             AsymmetricKeyPair.cpp
             CryptoFactory.cpp
@@ -37,6 +38,7 @@ set(SOURCES AESKey.cpp
 
 if(WITH_OPENSSL)
     list(APPEND SOURCES OSSLAES.cpp
+                        OSSLSM4.cpp
                         OSSLCMAC.cpp
                         OSSLComp.cpp
                         OSSLCryptoFactory.cpp

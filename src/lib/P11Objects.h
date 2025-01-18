@@ -355,6 +355,20 @@ protected:
 	bool initialized;
 };
 
+class P11SM4SecretKeyObj : public P11SecretKeyObj
+{
+public:
+	// Constructor
+	P11SM4SecretKeyObj();
+
+	// Add attributes
+	virtual bool init(OSObject *inobject);
+
+protected:
+	bool initialized;
+};
+
+
 class P11DESSecretKeyObj : public P11SecretKeyObj
 {
 public:

@@ -31,7 +31,7 @@
  implementation of the RFC but only generates 256-bit AES keys according to
  the "iterated and salted" scheme.
  *****************************************************************************/
-
+#include <iostream>
 #include "config.h"
 #include "RFC4880.h"
 #include "CryptoFactory.h"
@@ -40,6 +40,11 @@
 // This function derives a 256-bit AES key from the supplied password data
 bool RFC4880::PBEDeriveKey(const ByteString& password, ByteString& salt, AESKey** ppKey)
 {
+	// bgk add
+	std::cout << "                [bgk][RFC4880] password[0x] = " << password.hex_str() << ", size = " << password.size() << std::endl;
+	std::cout << "                [bgk][RFC4880] salt[0x] = " << salt.hex_str() << ", size = " << salt.size()  << std::endl;
+	// bgk add end
+
 	// Check that a proper salt value was supplied; it should be at least 8 bytes long
 	if (salt.size() < 8)
 	{
@@ -101,6 +106,10 @@ bool RFC4880::PBEDeriveKey(const ByteString& password, ByteString& salt, AESKey*
 	// Create the AES key instance
 	*ppKey = new AESKey(256);
 	(*ppKey)->setKeyBits(intermediate);
+
+	// bgk add
+	std::cout << "                [bgk][RFC4880] ppKey[0x] = " << (*ppKey)->getKeyCheckValue().hex_str() << ", size = " << (*ppKey)->getKeyCheckValue().size() << std::endl;
+	// bgk add end
 
 	// Release the hash instance
 	CryptoFactory::i()->recycleHashAlgorithm(hash);

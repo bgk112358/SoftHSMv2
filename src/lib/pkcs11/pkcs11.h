@@ -405,6 +405,7 @@ typedef unsigned long ck_key_type_t;
 #define CKK_GOSTR3411		(0x31UL)
 #define CKK_GOST28147		(0x32UL)
 #define CKK_EC_EDWARDS		(0x40UL)
+#define CKK_SM4   (0x80000300UL)
 #define CKK_VENDOR_DEFINED	((unsigned long) (1UL << 31))
 
 
@@ -893,7 +894,7 @@ typedef unsigned long ck_mechanism_type_t;
 // bgk add
 #define CKM_SM2_KEY_PAIR_GEN    0x80000101
 #define CKM_SM2                 0x80000102
-#define CKM_SM2_ENCRYPT  0x80000103
+#define CKM_SM2_ENCRYPT         0x80000103
 
 #define CKM_SM3                 0x80000201
 #define CKM_SM3_HMAC            0x80000202
