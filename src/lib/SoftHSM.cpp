@@ -2197,6 +2197,8 @@ static bool isSymMechanism(CK_MECHANISM_PTR pMechanism)
 		case CKM_AES_CBC_PAD:
 		case CKM_AES_CTR:
 		case CKM_AES_GCM:
+		case CKM_SM4_ECB:
+		case CKM_SM4_CBC:
 			return true;
 		default:
 			return false;
@@ -2415,6 +2417,26 @@ CK_RV SoftHSM::SymEncryptInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMech
 				return CKR_ARGUMENTS_BAD;
 			}
 			tagBytes = tagBytes / 8;
+			break;
+		case CKM_SM4_ECB:
+			if (keyType != CKK_SM4)
+				return CKR_KEY_TYPE_INCONSISTENT;
+			algo = SymAlgo::SM4;
+			mode = SymMode::ECB;
+			break;
+		case CKM_SM4_CBC:
+			if (keyType != CKK_SM4)
+				return CKR_KEY_TYPE_INCONSISTENT;
+			algo = SymAlgo::SM4;
+			mode = SymMode::CBC;
+			if (pMechanism->pParameter == NULL_PTR ||
+			    pMechanism->ulParameterLen == 0)
+			{
+				DEBUG_MSG("CBC mode requires an init vector");
+				return CKR_ARGUMENTS_BAD;
+			}
+			iv.resize(pMechanism->ulParameterLen);
+			memcpy(&iv[0], pMechanism->pParameter, pMechanism->ulParameterLen);
 			break;
 		default:
 			return CKR_MECHANISM_INVALID;
@@ -3145,6 +3167,26 @@ CK_RV SoftHSM::SymDecryptInit(CK_SESSION_HANDLE hSession, CK_MECHANISM_PTR pMech
 				return CKR_ARGUMENTS_BAD;
 			}
 			tagBytes = tagBytes / 8;
+			break;
+		case CKM_SM4_ECB:
+			if (keyType != CKK_SM4)
+				return CKR_KEY_TYPE_INCONSISTENT;
+			algo = SymAlgo::SM4;
+			mode = SymMode::ECB;
+			break;
+		case CKM_SM4_CBC:
+			if (keyType != CKK_SM4)
+				return CKR_KEY_TYPE_INCONSISTENT;
+			algo = SymAlgo::SM4;
+			mode = SymMode::CBC;
+			if (pMechanism->pParameter == NULL_PTR ||
+			    pMechanism->ulParameterLen == 0)
+			{
+				DEBUG_MSG("CBC mode requires an init vector");
+				return CKR_ARGUMENTS_BAD;
+			}
+			iv.resize(pMechanism->ulParameterLen);
+			memcpy(&iv[0], pMechanism->pParameter, pMechanism->ulParameterLen);
 			break;
 		default:
 			return CKR_MECHANISM_INVALID;
@@ -7406,7 +7448,8 @@ CK_RV SoftHSM::C_DeriveKey
 	    keyType != CKK_DES &&
 	    keyType != CKK_DES2 &&
 	    keyType != CKK_DES3 &&
-	    keyType != CKK_AES)
+	    keyType != CKK_AES &&
+	    keyType != CKK_SM4)
 		return CKR_TEMPLATE_INCONSISTENT;
 
 	// Check authorization

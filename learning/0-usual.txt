@@ -1,0 +1,19 @@
+
+softhsm2-util --delete-token --token=token1
+
+./pkcs11-tool --module /home/ubuntu/Documents/HSM/20250106/SoftHSMv2_bgk/build/src/lib/libsofthsm2.so
+--list-slots
+--list-objects
+--list-mechanisms
+
+--init-token --slot 0 --label "token1"
+--init-pin --slot 0x190d1504 --login --so-pin 12345
+
+--login --so-pin 12345 --keygen --key-type="sm4"  --label "mySM4Key" --id 01
+--login --pin 1234 --encrypt --id 01 --mechanism SM4_ECB --input-file test/plaintext.txt --output-file test/ciphertext.bin
+--login --pin 1234 --encrypt --id 01 --mechanism SM4_CBC --input-file test/plaintext.txt --output-file test/ciphertext.bin
+--delete-object --type secrkey --label mySM4Key
+
+--login --so-pin 12345 --keygen --key-type="aes:16"  --label "myAESKey" --id 02
+--login --pin 1234 --encrypt --id 02 --mechanism AES-CBC --input-file test/plaintext.txt --output-file test/ciphertext.bin
+--delete-object --type secrkey --label myAESKey

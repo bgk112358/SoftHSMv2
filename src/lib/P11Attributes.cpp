@@ -889,7 +889,6 @@ CK_RV P11AttrCheckValue::updateAttr(Token *token, bool isPrivate, CK_VOID_PTR pV
 				checkValue = aes.getKeyCheckValue();
 				break;
 			case CKK_SM4:
-				printf("[bgk][updateAttr] %s:%d:%s, keybits = %s \n", __FILE__, __LINE__, __FUNCTION__, keybits);
 				sm4.setKeyBits(keybits);
 				sm4.setBitLen(keybits.size() * 8);
 				checkValue = sm4.getKeyCheckValue();
@@ -1054,7 +1053,6 @@ CK_RV P11AttrValue::updateAttr(Token *token, bool isPrivate, CK_VOID_PTR pValue,
 				checkValue = aes.getKeyCheckValue();
 				break;
 			case CKK_SM4:
-				printf("[bgk][updateAttr] %s:%d:%s, plaintext = %s \n", __FILE__, __LINE__, __FUNCTION__, plaintext);
 				sm4.setKeyBits(plaintext);
 				sm4.setBitLen(plaintext.size() * 8);
 				checkValue = sm4.getKeyCheckValue();
